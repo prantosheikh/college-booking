@@ -1,22 +1,40 @@
 import { Link } from "react-router-dom";
 import { AwesomeButton } from "react-awesome-button";
-import 'react-awesome-button/dist/styles.css';
-
+import "react-awesome-button/dist/styles.css";
+import { useState } from "react";
+import axios from "axios";
 
 const Navbar = () => {
+  const [query, setQuery] = useState("");
+  console.log(query);
+  const [results, setResults] = useState([]);
+
+  console.log(results);
+
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/search?query=${query}`
+      );
+      setResults(response.data);
+    } catch (error) {
+      console.error("Error searching:", error);
+    }
+  };
   const navbar = (
     <>
       <li>
-        <Link to='/'>Home</Link>
+        <Link to="/">Home</Link>
       </li>
       <li>
-        <Link>Colleges</Link>
+        <Link to="/colleges">Colleges</Link> {/* Add proper 'to' attribute */}
       </li>
       <li>
-        <Link>Admission</Link>
+        <Link to="/admission">Admission</Link> {/* Add proper 'to' attribute */}
       </li>
       <li>
-        <Link>My College</Link>
+        <Link to="/mycollege">My College</Link>{" "}
+        {/* Add proper 'to' attribute */}
       </li>
     </>
   );
@@ -45,28 +63,46 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
-            {" "}
             {navbar}
           </ul>
         </div>
-        <Link to='/' className="btn btn-ghost normal-case text-2xl font-bold">
+        <Link to="/" className="btn btn-ghost normal-case text-2xl font-bold">
           College <span className="hidden lg:block">Booking</span>
         </Link>
       </div>
       <div className="form-control lg:-ms-56">
-          <input
-            type="text"
-            placeholder="Search"
-            className="input input-bordered w-24 md:w-auto"
-          />
-        </div>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search"
+          className="input input-bordered w-24 md:w-auto"
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
       <div className="navbar-center hidden ms-24 lg:flex">
-        <ul className="menu menu-horizontal  px-1"> {navbar}</ul>
+        <ul className="menu menu-horizontal px-1">{navbar}</ul>
       </div>
 
       <div className="navbar-end">
-      <Link to="/login"><AwesomeButton className="px-6"  size="small"   type="primary">Login</AwesomeButton></Link>
-     
+        <Link to="/login">
+          <AwesomeButton className="px-6" size="small" type="primary">
+            Login
+          </AwesomeButton>
+        </Link>
+      </div>
+
+       {/* Display search results */}
+       <div>
+       {results.length > 0 ? (
+          <ul>
+            {results.map((college) => (
+              <li key={college._id}>{college.name}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No results found.</p>
+        )}
       </div>
     </div>
   );

@@ -1,9 +1,24 @@
 import { useForm } from "react-hook-form";
 import loginImg from "../../assets/Login/Login.jpg";
-import { Link } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import SocialLogin from "../SocialLogin/SocialLogin";
+import useAuth from "../../hooks/useAuth";
+import { BiHide, BiShow } from "react-icons/bi";
+import { useState } from "react";
+import Swal from "sweetalert2";
+
 const Login = () => {
+  const {user, signIn} = useAuth()
+  const [error, setError] = useState("");
+  const location = useLocation()
+  const from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const handleTogglePassword = () => {
+    setPasswordVisible(!passwordVisible);
+};
+
   const {
     register,
     handleSubmit,
@@ -11,11 +26,30 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data.email, data.password);
+    signIn(data.email, data.password)
+    .then((result) => {
+      const user = result.user;
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Account created successfully ",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      setError('')
+    })
+    .catch((error) => {
+      console.log(error.message);
+      const costomArror = error.message === "Firebase: Error (auth/user-not-found)." && "User not found. Please verify the entered information and try again."
+      setError(costomArror);
+    });
+  }
 
   console.log(watch("example"));
   return (
-    <div className=" shadow-lg my-10">
+    <div className="shadow-lg my-10">
       <div className="lg:flex px-10 lg:justify-around lg:items-center lg:min-h-screen">
         <div className="lg:w-1/2">
           <img src={loginImg} alt="" />
@@ -40,48 +74,48 @@ const Login = () => {
                 <input
                   className="border w-full px-4 py-3 rounded"
                   placeholder="Email"
-                  {...register("example")}
+                  {...register("email")}
                 />
               </div>
 
-              <div className="form-contro">
+              <div className="form-contro mb-2">
                 <label className="label">
                   <span className="label-text">Password</span>
                 </label>
                 {/* include validation with required or other standard HTML validation rules */}
                 <input
                   className="border  px-4 py-3 w-full"
+                  type={passwordVisible ? "text" : "password"}
                   placeholder="Password"
-                  {...register("exampleRequired", { required: true })}
+                  {...register("password", { required: true })}
+                  
                 />
+                 {errors.password && (
+                  <span className="text-red-600 mt-3">
+                    Name field is required
+                  </span>
+                 )}
+                
                 {/* errors will return when field validation fails  */}
                 {errors.exampleRequired && (
                   <span className="text-red-600">This field is required</span>
                 )}
               </div>
+              <span className="text-xl mt-2 cursor-pointer" onClick={handleTogglePassword}>
+                {passwordVisible ? <BiShow></BiShow> : <BiHide></BiHide>}
+              </span>
+
+              <label className="label">
+                  <p className="text-red-600">{error}</p>
+                </label>
 
               <input
-                className="bg-blue-600 mt-5 btn-block text-white py-3 rounded-xl font-bold"
+                className="bg-blue-600 cursor-pointer mt-5 btn-block text-white py-3 rounded-xl font-bold"
                 type="submit"
               />
             </form>
             
-            <div className="divider">OR</div>
-            <div className="flex justify-between items-center text-center pb-6 gap-5 mt-2">
-              <button
-                type="submit"
-                className="bg-blue-600 btn-block py-2 rounded-2xl border  text-white"
-              >
-                <FcGoogle className="text-white ms-16 lg:ms-36 " />
-                Google
-                
-              </button>
-
-              <button className=" bg-blue-900 btn-block py-2 rounded-2xl border text-white">
-                <FaFacebookF className="rounded-2xl ms-16  text-white lg:ms-36" />{" "}
-                Facebook
-              </button>
-            </div>
+          <SocialLogin></SocialLogin>
         </div>
       </div>
     </div>
@@ -89,3 +123,6 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
