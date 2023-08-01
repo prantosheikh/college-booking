@@ -2,25 +2,31 @@ import { Link } from "react-router-dom";
 import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/styles.css";
 import { useState } from "react";
+import "./Navbar.css";
 import axios from "axios";
 
 const Navbar = () => {
-  const [query, setQuery] = useState("");
-  console.log(query);
-  const [results, setResults] = useState([]);
-
-  console.log(results);
-
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/search?query=${query}`
-      );
-      setResults(response.data);
-    } catch (error) {
-      console.error("Error searching:", error);
+  const [college, setCollege] = useState([]);
+  const [search, setSearch] = useState("");
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
+  console.log(college);
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const search = event.target.search.value;
+    if (search.trim() === "") {
+      toast.error("Please Input Something!");
+      return;
     }
+
+    fetch(`http://localhost:5000/collegeSearchByName/${search}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setCollege(data);
+        setShowAutocomplete(data.length > 0); // Show the autocomplete only if there are search results
+      })
+      .catch((error) => console.log(error));
   };
+
   const navbar = (
     <>
       <li>
@@ -40,7 +46,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 -py-2 ">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -72,32 +78,8 @@ const Navbar = () => {
       </div>
       <div className="form-control lg:-ms-56">
         <div>
-          <div className="form-control">
-            <div className="input-group">
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search…"
-                className="input input-bordered"
-              />
-              <button onClick={handleSearch} className="btn btn-square">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </button>
-            </div>
+          <div className="form-control ms-12">
+           
           </div>
         </div>
         <div></div>
@@ -115,7 +97,7 @@ const Navbar = () => {
       </div>
 
       {/* Display search results */}
-      <div>
+      {/* <div>
         {results.length > 0 ? (
           <ul>
             {results.map((college) => (
@@ -125,7 +107,7 @@ const Navbar = () => {
         ) : (
           <p>No results found.</p>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
