@@ -1,88 +1,49 @@
-
+import React, { useEffect, useState } from "react";
 import LightGallery from "lightgallery/react";
 // import styles
 import "lightgallery/css/lightgallery.css";
 import "lightgallery/css/lg-zoom.css";
 import "lightgallery/css/lg-thumbnail.css";
-
 // import plugins if you need
 import lgThumbnail from "lightgallery/plugins/thumbnail";
 import lgZoom from "lightgallery/plugins/zoom";
 import { Link } from "react-router-dom";
 
 const CollegeImageGallery = () => {
+  const [images, setImage] = useState([]);
+  console.log(images);
   const onInit = () => {
     console.log("lightGallery has been initialized");
   };
 
+  useEffect(() => {
+    fetch("http://localhost:5000/collegeImageGallery", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setImage(data);
+      });
+  }, []);
+
   return (
     <div>
-       <h1 className="py-3 px-5 border-2 border-blue-500 text-center my-8 rounded-tl-3xl rounded-br-3xl text-3xl font-semibold w-1/3 mx-auto">Gallery Section</h1>
+      <h1 className="py-3 px-5 border-2 border-blue-500 text-center my-8 rounded-tl-3xl rounded-br-3xl text-3xl font-semibold w-1/3 mx-auto">
+        Gallery Section
+      </h1>
 
-<div className="flex  mx-auto">
-      
-      <div className="flex justify-center">
-        <div className="w-1/2">
-          <div className="App">
-            <LightGallery
-              onInit={onInit}
-              speed={500}
-              plugins={[lgThumbnail, lgZoom]}
-            >
-              <a href="https://i.ibb.co/HdPXmYW/group-colleagues-with-diploma.jpg">
-                <img
-                width={600} className="border-white hover:scale-105 transition-transform border-4"
-                  alt="img1"
-                  src="https://i.ibb.co/HdPXmYW/group-colleagues-with-diploma.jpg"
-                />
-              </a>
-              <a href="https://i.ibb.co/z2hK5W7/low-angle-graduated-students-1.jpg">
-                <img
-                width={600}
-                className="border-white hover:scale-105 transition-transform border-4"
-                  alt="img2"
-                  src="https://i.ibb.co/C9FbWPM/low-angle-graduated-students.jpg"
-                />
-              </a>
-   
-            </LightGallery>
-          </div>
+      <section className="px-4 py-8">
+        <div >
+          {images.map((re) => (
+            <p className="grid gap-4 grid-cols-1  md:grid-cols-3 lg:grid-cols-4">
+              {re.img.map((rer) => (
+                <img data-aos="zoom-in" className="rounded-md w-4/5 hover:scale-105 transition-transform lg:w-full h-48 lg:h-48  mx-auto" src={rer}alt="" />
+              ))}
+            </p>
+          ))}
         </div>
-        <div className="w-1/3">
-          <LightGallery
-            onInit={onInit}
-            speed={500}
-            plugins={[lgThumbnail, lgZoom]}
-          >
-            <a href="https://i.ibb.co/Jz8Rngv/group-students-taking-selfie.jpg">
-              <img
-              className="border-white hover:scale-105 transition-transform border-4"
-                alt="img1"
-                src="https://i.ibb.co/Jz8Rngv/group-students-taking-selfie.jpg"
-              />
-            </a>
-            <a href="https://i.ibb.co/qjbT8Vs/group-diverse-grads-throwing-caps-up-sky.jpg">
-              <img
-              className="border-white hover:scale-105 transition-transform border-4"
-                alt="img2"
-                src="https://i.ibb.co/qjbT8Vs/group-diverse-grads-throwing-caps-up-sky.jpg"
-              />
-            </a>
-            <a href="https://i.ibb.co/fNfJybq/medium-shot-colleagues-posing-together.jpg">
-              <img
-             
-              className="border-white hover:scale-105 transition-transform border-4"
-                alt="img2"
-                src="https://i.ibb.co/fNfJybq/medium-shot-colleagues-posing-together.jpg"
-              />
-            </a>
-       
-          </LightGallery>
-        </div>
-      </div>
+      </section>
     </div>
-    </div>
-    
   );
 };
 

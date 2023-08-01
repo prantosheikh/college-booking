@@ -22,7 +22,7 @@ const SocialLogin = () => {
             photo: loggedInUser.photoURL,
           };
 
-          fetch("https://college-server-kappa.vercel.app//users", {
+          fetch("https://college-server-kappa.vercel.app/users", {
             method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(saveUser),

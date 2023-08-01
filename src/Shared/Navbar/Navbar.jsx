@@ -18,7 +18,7 @@ const Navbar = () => {
       return;
     }
 
-    fetch(`https://college-server-kappa.vercel.app//collegeSearchByName/${search}`)
+    fetch(`https://college-server-kappa.vercel.app/collegeSearchByName/${search}`)
       .then((res) => res.json())
       .then((data) => {
         setCollege(data);
@@ -73,7 +73,10 @@ const Navbar = () => {
           </ul>
         </div>
         <Link to="/" className="btn btn-ghost normal-case text-2xl font-bold">
-          College <span className="hidden lg:block">Booking</span>
+        <div className="flex justify-around items-center gap-4">
+        <img width={45} src="https://i.ibb.co/McLSXGQ/graduation-7518757.png" alt="" />
+        <h1 className="font-mono text-3xl p-1 border-x-2   rounded-xl border-blue-500">Alibris</h1>
+        </div>
         </Link>
       </div>
       <div className="form-control lg:-ms-56">

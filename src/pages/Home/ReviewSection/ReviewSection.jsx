@@ -19,9 +19,9 @@ import {
 const ReviewSection = () => {
   const [reviews, setReviews] = useState([]);
   // const [review, setReview] = useState([]);
-  console.log(reviews);
+  // console.log(reviews);
   useEffect(() => {
-    fetch("https://college-server-kappa.vercel.app//review", {
+    fetch("https://college-server-kappa.vercel.app/review", {
       method: "GET",
       headers: { "content-type": "application/json" },
     })
@@ -38,7 +38,7 @@ const ReviewSection = () => {
         Review Section
       </h1>
       {reviews?.map((review) => (
-        <p key={review._id}>{console.log(review)}</p>
+        <p key={review._id}></p>
       ))}
       <Swiper
         slidesPerView={1}
@@ -53,16 +53,16 @@ const ReviewSection = () => {
         modules={[Keyboard, Pagination, Navigation]}
         className="mySwiper  my-20"
       >
-        {reviews?.map((review) => (
-          <SwiperSlide>
-            {console.log(review)}
+        {reviews?.map((review, i) => (
+          <SwiperSlide key={i}>
+            {/* {console.log(review)} */}
             <p className="text-center my-8 text-xl font-semibold">
               {review.college_name}
             </p>
             <div className="flex px-16 gap-5 items-center">
-              {review?.reviews?.map((revie) => (
-                <div className="bg-white rounded-lg shadow-md p-6 max-w-sm w-full mx-auto">
-                  {console.log(revie)}
+              {review?.reviews?.map((revie,ii) => (
+                <div data-aos="zoom-in-left" key={ii} className="bg-white rounded-lg shadow-md p-6 max-w-sm w-full mx-auto">
+                  {/* {console.log(revie)} */}
                   <div className="flex items-center mb-4">
                     <img
                       className="w-10 h-10 rounded-full mr-4"

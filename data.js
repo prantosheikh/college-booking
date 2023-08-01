@@ -156,3 +156,20 @@
     ]
   }
 ]
+
+
+
+  "https://i.ibb.co/F6GPVy4/three-happy-graduates-smiling-holding-diplomas.jpg",
+  "https://i.ibb.co/SPj5h2w/three-happy-international-university-graduates-smiling-rejoicing-holding-diplomas-future-lawyers-eng.jpg",
+  "https://i.ibb.co/RDSRYhD/three-cheerful-graduates-smiling-speaking-fooling-holding-diplomas.jpg",
+  "https://i.ibb.co/FbkSmnk/multinational-graduates-male-female-celebrating-graduation-university-campus-removing-their-graduati.jpg",
+  "https://i.ibb.co/WvDkL44/high-angle-students-taking-selfie.jpg",
+  "https://i.ibb.co/PtMNV8P/students-proud-graduate.jpg",
+  "https://i.ibb.co/ZdKWxm5/low-angle-happy-students.jpg",
+  "https://i.ibb.co/z2hK5W7/low-angle-graduated-students-1.jpg",
+  "https://i.ibb.co/HdPXmYW/group-colleagues-with-diploma.jpg",
+  "https://i.ibb.co/fNfJybq/medium-shot-colleagues-posing-together.jpg",
+  "https://i.ibb.co/qjbT8Vs/group-diverse-grads-throwing-caps-up-sky.jpg",
+  "https://i.ibb.co/C9FbWPM/low-angle-graduated-students.jpg",
+  "https://i.ibb.co/Jz8Rngv/group-students-taking-selfie.jpg"
+
