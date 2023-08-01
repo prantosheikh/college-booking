@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import { FaRegStar, FaStar } from "react-icons/fa";
+import Rating from "react-rating";
 import { HiArrowCircleRight } from "react-icons/hi";
 // Import Swiper styles
 import "swiper/css";
@@ -19,7 +21,7 @@ const ReviewSection = () => {
   // const [review, setReview] = useState([]);
   console.log(reviews);
   useEffect(() => {
-    fetch("http://localhost:5000/review", {
+    fetch("https://college-server-kappa.vercel.app//review", {
       method: "GET",
       headers: { "content-type": "application/json" },
     })
@@ -71,34 +73,19 @@ const ReviewSection = () => {
                         {revie?.reviewer_name}
                       </h2>
                       <p className="text-gray-500">Rating: {revie?.ratting}</p>
-                      <div className="rating rating-sm">
-                        <input
-                          type="radio"
-                          name="rating-6"
-                          className="mask mask-star-2 bg-orange-400"
-                        />
-                        <input
-                          type="radio"
-                          name="rating-6"
-                          className="mask mask-star-2 bg-orange-400"
-                          checked
-                        />
-                        <input
-                          type="radio"
-                          name="rating-6"
-                          className="mask mask-star-2 bg-orange-400"
-                        />
-                        <input
-                          type="radio"
-                          name="rating-6"
-                          className="mask mask-star-2 bg-orange-400"
-                        />
-                        <input
-                          type="radio"
-                          name="rating-6"
-                          className="mask mask-star-2 bg-orange-400"
-                        />
-                      </div>
+                      <span className="text-lg font-semibold">
+                    <Rating
+                      placeholderRating={revie?.ratting}
+                      emptySymbol={
+                        <FaRegStar className="text-blue-500"></FaRegStar>
+                      }
+                      placeholderSymbol={
+                        <FaStar className="text-orange-500"></FaStar>
+                      }
+                      fullSymbol={<FaStar></FaStar>}
+                      readonly
+                    />
+                  </span>
                     </div>
                   </div>
                   <p className="text-gray-700 mb-4"> {revie?.review_content}</p>

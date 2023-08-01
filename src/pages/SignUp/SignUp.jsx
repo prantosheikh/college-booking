@@ -30,7 +30,7 @@ const SignUp = () => {
           date: data.date,
         };
 
-        fetch("http://localhost:5000/users", {
+        fetch("https://college-server-kappa.vercel.app//users", {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify(saveUser),

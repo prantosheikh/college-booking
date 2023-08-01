@@ -6,7 +6,7 @@ const CollegeDetails = () => {
   const [college, setCollege] = useState([]);
   console.log(college.events);
   useEffect(() => {
-    fetch(`http://localhost:5000/college-details/${id}`, {
+    fetch(`https://college-server-kappa.vercel.app//college-details/${id}`, {
       method: "GET",
       headers: { "content-type": "application/json" },
     })

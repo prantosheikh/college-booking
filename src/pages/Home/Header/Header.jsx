@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LazyLoad from 'react-lazy-load';
 import { Link } from "react-router-dom";
 import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/styles.css";
@@ -18,7 +19,7 @@ const Header = () => {
       return;
     }
 
-    fetch(`http://localhost:5000/collegeSearchByName/${searchValue}`)
+    fetch(`https://college-server-kappa.vercel.app//collegeSearchByName/${searchValue}`)
       .then((res) => res.json())
       .then((data) => {
         setCollege(data);
@@ -30,10 +31,13 @@ const Header = () => {
   return (
     <div className="">
       <div className="relative">
-        <img
+      <LazyLoad height={762}>
+      <img
           src="https://i.ibb.co/DVtB4Zt/building-gc4454145c-192.jpg"
           alt=""
           />
+    </LazyLoad>
+        
         <div className="absolute w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-shadow-md">
       <div>
         

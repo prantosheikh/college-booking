@@ -18,7 +18,7 @@ const Navbar = () => {
       return;
     }
 
-    fetch(`http://localhost:5000/collegeSearchByName/${search}`)
+    fetch(`https://college-server-kappa.vercel.app//collegeSearchByName/${search}`)
       .then((res) => res.json())
       .then((data) => {
         setCollege(data);

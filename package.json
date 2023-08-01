@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -18,11 +18,13 @@
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
-    "react-autocomplete": "^1.8.1",
     "react-awesome-button": "^7.0.5",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.2",
     "react-icons": "^4.10.1",
+    "react-lazy-load": "^4.0.1",
+    "react-loading-skeleton": "^3.3.1",
+    "react-rating": "^2.0.5",
     "react-router-dom": "^6.14.2",
     "react-select": "^5.7.4",
     "react-toastify": "^9.1.3",
