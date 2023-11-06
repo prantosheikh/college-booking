@@ -1,20 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
 import { FaRegStar, FaStar } from "react-icons/fa";
-import Rating from "react-rating";
 import { HiArrowCircleRight } from "react-icons/hi";
+import Rating from "react-rating";
+import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 import "./ReviewSection";
 // import required modules
 import {
   Keyboard,
-  Pagination,
   Navigation,
-  EffectCoverflow,
+  Pagination
 } from "swiper/modules";
 const ReviewSection = () => {
   const [reviews, setReviews] = useState([]);
@@ -46,9 +45,7 @@ const ReviewSection = () => {
         keyboard={{
           enabled: true,
         }}
-        pagination={{
-          clickable: true,
-        }}
+        
         navigation={true}
         modules={[Keyboard, Pagination, Navigation]}
         className="mySwiper  my-20"

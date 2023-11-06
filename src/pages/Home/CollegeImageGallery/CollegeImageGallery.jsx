@@ -1,50 +1,60 @@
-import React, { useEffect, useState } from "react";
-import LightGallery from "lightgallery/react";
-// import styles
-import "lightgallery/css/lightgallery.css";
-import "lightgallery/css/lg-zoom.css";
-import "lightgallery/css/lg-thumbnail.css";
-// import plugins if you need
-import lgThumbnail from "lightgallery/plugins/thumbnail";
-import lgZoom from "lightgallery/plugins/zoom";
-import { Link } from "react-router-dom";
+import React, { useCallback, useState } from "react";
+import Carousel, { Modal, ModalGateway } from "react-images";
+import Gallery from "react-photo-gallery";
+import { photos } from "../../../assets/Image";
 
 const CollegeImageGallery = () => {
-  const [images, setImage] = useState([]);
-  console.log(images);
-  const onInit = () => {
-    console.log("lightGallery has been initialized");
+  const [currentImage, setCurrentImage] = useState(0);
+  const [viewerIsOpen, setViewerIsOpen] = useState(false);
+
+  const openLightbox = useCallback((event, { photo, index }) => {
+    setCurrentImage(index);
+    setViewerIsOpen(true);
+  }, []);
+
+  const closeLightbox = () => {
+    setCurrentImage(0);
+    setViewerIsOpen(false);
   };
 
-  useEffect(() => {
-    fetch("http://localhost:5000/collegeImageGallery", {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setImage(data);
-      });
-  }, []);
+// const [images, setImage] = useState([]);
+
+// useEffect(() => {
+//   fetch("http://localhost:5000/collegeImageGallery", {
+//     method: "GET",
+//   })
+//     .then((res) => res.json())
+//     .then((data) => {
+//       setImage(data);
+//     });
+// }, []);
 
   return (
     <div>
       <h1 className="py-3 px-5 border-2 border-blue-500 text-center my-8 rounded-tl-3xl rounded-br-3xl text-3xl font-semibold w-1/3 mx-auto">
+        {" "}
         Gallery Section
       </h1>
-
-      <section className="px-4 py-8">
-        <div >
-          {images.map((re) => (
-            <p className="grid gap-4 grid-cols-1  md:grid-cols-3 lg:grid-cols-4">
-              {re.img.map((rer) => (
-                <img data-aos="zoom-in" className="rounded-md w-4/5 hover:scale-105 transition-transform lg:w-full h-48 lg:h-48  mx-auto" src={rer}alt="" />
-              ))}
-            </p>
-          ))}
-        </div>
-      </section>
+      <div data-aos="zoom-in-left">
+      <Gallery photos={photos} onClick={openLightbox} />
+      <ModalGateway>
+        {viewerIsOpen ? (
+          <Modal onClose={closeLightbox}>
+            <Carousel
+              currentIndex={currentImage}
+              views={photos.map(x => ({
+                ...x,
+                srcset: x.srcSet,
+                caption: x.title
+              }))}
+            />
+          </Modal>
+        ) : null}
+      </ModalGateway>
+      </div>
     </div>
   );
 };
 
 export default CollegeImageGallery;
+
