@@ -9,12 +9,13 @@ import Container from "../../../Shared/Container/Container";
 
 AOS.init();
 
-const CollegeSection = () => {
+const CollegeCard = () => {
   const [colleges, setColleges] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  console.log(colleges);
 
   useEffect(() => {
-    fetch("https://college-server-kappa.vercel.app/collegeSection", {
+    fetch("http://localhost:5000/colleges", {
       method: "GET",
       headers: { "content-type": "application/json" },
     })
@@ -24,23 +25,6 @@ const CollegeSection = () => {
         setColleges(data);
       });
   }, []);
-
-  useEffect(() => {
-    // Perform some action when isLoading or colleges change
-    if (isLoading) {
-      console.log("Data is currently loading...");
-    } else {
-      console.log("Data has finished loading.");
-    }
-
-    if (colleges.length === 0) {
-      console.log("No colleges found.");
-    } else {
-      console.log("Colleges data:", colleges);
-    }
-
-    // Additional logic or actions can be added here.
-  }, [isLoading, colleges]);
 
   return (
     <div>
@@ -179,4 +163,4 @@ const CollegeSection = () => {
   );
 };
 
-export default CollegeSection;
+export default CollegeCard;

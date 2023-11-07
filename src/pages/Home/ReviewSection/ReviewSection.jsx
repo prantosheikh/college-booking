@@ -15,6 +15,7 @@ import {
   Navigation,
   Pagination
 } from "swiper/modules";
+import Container from "../../../Shared/Container/Container";
 const ReviewSection = () => {
   const [reviews, setReviews] = useState([]);
   // const [review, setReview] = useState([]);
@@ -31,7 +32,7 @@ const ReviewSection = () => {
   }, []);
 
   return (
-    <div className="px-10 ">
+    <Container>
       <h1 className="py-3 px-5 border-2 border-blue-500 text-center my-8 rounded-tl-3xl rounded-br-3xl text-3xl font-semibold w-1/3 mx-auto">
         {" "}
         Review Section
@@ -97,7 +98,7 @@ const ReviewSection = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </Container>
   );
 };
 

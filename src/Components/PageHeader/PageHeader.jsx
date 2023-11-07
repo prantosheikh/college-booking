@@ -3,7 +3,7 @@ import React from "react";
 const PageHeader = ({ title, backgroundImage }) => {
   return (
     <div
-      className="relative h-64 md:h-96 bg-cover bg-center text-white"
+      className="relative h-64 md:h-80 bg-cover bg-center text-white"
       style={{
         backgroundImage: `url(${backgroundImage})`,
       }}

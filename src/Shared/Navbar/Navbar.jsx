@@ -1,117 +1,177 @@
-import { Link } from "react-router-dom";
-import { AwesomeButton } from "react-awesome-button";
-import "react-awesome-button/dist/styles.css";
-import { useState } from "react";
-import "./Navbar.css";
-import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { HiMiniBars3CenterLeft } from "react-icons/hi2";
+import { Link, useLocation } from "react-router-dom";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
+import WhiteLogo from '../../assets/Logo/mortarboard.png';
+import Logo from '../../assets/Logo/school.png';
+
+
 
 const Navbar = () => {
-  const [college, setCollege] = useState([]);
-  const [search, setSearch] = useState("");
-  const [showAutocomplete, setShowAutocomplete] = useState(false);
-  console.log(college);
-  const handleSearch = (event) => {
-    event.preventDefault();
-    const search = event.target.search.value;
-    if (search.trim() === "") {
-      toast.error("Please Input Something!");
-      return;
-    }
+  const [open, setOpen] = useState(false);
+  const [scrolling, setScrolling] = useState(false);
+  const location = useLocation();
+  const [isHomePage, setIsHomePage] = useState(location.pathname === "/");
+  const { user, logOut } = useContext(AuthContext);
 
-    fetch(`https://college-server-kappa.vercel.app/collegeSearchByName/${search}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCollege(data);
-        setShowAutocomplete(data.length > 0); // Show the autocomplete only if there are search results
-      })
-      .catch((error) => console.log(error));
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setScrolling(true);
+      } else {
+        setScrolling(false);
+      }
+    };
 
-  const navbar = (
-    <>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/colleges">Colleges</Link> {/* Add proper 'to' attribute */}
-      </li>
-      <li>
-        <Link to="/admission">Admission</Link> {/* Add proper 'to' attribute */}
-      </li>
-      <li>
-        <Link to="/mycollege">My College</Link>{" "}
-        {/* Add proper 'to' attribute */}
-      </li>
-    </>
-  );
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Update the isHomePage state when the location changes
+  useEffect(() => {
+    setIsHomePage(location.pathname === "/");
+  }, [location.pathname]);
 
   return (
-    <div className="navbar bg-base-100 -py-2 ">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+    <header
+      className={`fixed top-0 w-full z-10  ${
+        scrolling ? "bg-white z-10" : "bg-transparent"
+      } duration-300`}
+    >
+      <div className="navbar max-w-[1520px] px-5 py-5 md:py-0 mx-auto">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <label
+              tabIndex={0}
+              className="lg:hidden ml-0 cursor-pointer"
+              onClick={() => setOpen(!open)}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
+              <HiMiniBars3CenterLeft
+                className={`${
+                  isHomePage || scrolling ? "text-black" : "text-white"
+                }`}
+                size={25}
               />
-            </svg>
-          </label>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-          >
-            {navbar}
-          </ul>
-        </div>
-        <Link to="/" className="btn btn-ghost normal-case text-2xl font-bold">
-        <div className="flex justify-around items-center gap-4">
-        <img width={45} src="https://i.ibb.co/McLSXGQ/graduation-7518757.png" alt="" />
-        <h1 className="font-mono text-3xl p-1 border-x-2   rounded-xl border-blue-500">Alibris</h1>
-        </div>
-        </Link>
-      </div>
-      <div className="form-control lg:-ms-56">
-        <div>
-          <div className="form-control ms-12">
-           
+            </label>
+            {/* Mobile Menu */}
+            <div
+              className={`${
+                open ? "top-10 left-5 lg:hidden" : "top-10 -left-[500px]"
+              } bg-white rounded px-8 py-10 shadow-2xl border text-lg absolute z-10 transition-all duration-500`}
+            >
+              <ul className="w-48 h-52 flex flex-col justify-between items-center">
+                <li className="group w-full">
+                  <Link to="/">
+                    Home
+                    <span className="block max-w-0 group-hover:max-w-full transition-all duration-700 h-1 bg-primary   mt-[1px]"></span>
+                  </Link>
+                </li>
+                <li className="group w-full">
+                  <Link to="/college">
+                    College
+                    <span className="block max-w-0 group-hover:max-w-full transition-all duration-700 h-1 bg-primary   mt-[1px]"></span>
+                  </Link>
+                </li>
+                <li className="group w-full">
+                  <Link to="/admission">
+                    Admission
+                    <span className="block max-w-0 group-hover:max-w-full transition-all duration-700 h-1 bg-primary   mt-[1px]"></span>
+                  </Link>
+                </li>
+                <li className="group w-full">
+                  <Link>
+                    Contact
+                    <span className="block max-w-0 group-hover:max-w-full transition-all duration-700 h-1 bg-primary   mt-[1px]"></span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            {/* Mobile Menu END */}
           </div>
+          <Link>
+            <img
+              className="max-h-14 hidden sm:block"
+              src={isHomePage || scrolling ? Logo : WhiteLogo}
+              alt="Univista Logo"
+            />
+          </Link>
         </div>
-        <div></div>
-      </div>
-      <div className="navbar-center hidden ms-10 lg:flex">
-        <ul className="menu menu-horizontal px-1">{navbar}</ul>
-      </div>
-
-      <div className="navbar-end">
-        <Link to="/login">
-          <AwesomeButton className="px-6" size="small" type="primary">
-            Login
-          </AwesomeButton>
-        </Link>
-      </div>
-
-      {/* Display search results */}
-      {/* <div>
-        {results.length > 0 ? (
-          <ul>
-            {results.map((college) => (
-              <li key={college._id}>{college.name}</li>
-            ))}
+        <div className="navbar-center hidden lg:flex">
+          <ul
+            className={`flex gap-6 ${
+              scrolling || location.pathname == "/"
+                ? "text-black"
+                : "text-white"
+            }`}
+          >
+            <li className="group">
+              <Link to="/">
+                Home
+                <span className="block max-w-0 group-hover:max-w-full transition-all duration-700 h-1 bg-primary mt-[1px]"></span>
+              </Link>
+            </li>
+            <li className="group">
+              <Link to="/colleges">
+                College
+                <span className="block max-w-0 group-hover:max-w-full transition-all duration-700 h-1 bg-primary mt-[1px]"></span>
+              </Link>
+            </li>
+            <li className="group">
+              <Link to="/admission">
+                Admission
+                <span className="block max-w-0 group-hover:max-w-full transition-all duration-700 h-1 bg-primary mt-[1px]"></span>
+              </Link>
+            </li>
+            <li className="group">
+              <Link>
+                Contact
+                <span className="block max-w-0 group-hover:max-w-full transition-all duration-700 h-1 bg-primary mt-[1px]"></span>
+              </Link>
+            </li>
           </ul>
-        ) : (
-          <p>No results found.</p>
-        )}
-      </div> */}
-    </div>
+        </div>
+        <div className="navbar-end">
+          {user ? (
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <img src={user?.photoURL} />
+                </div>
+              </label>
+              <ul
+                tabIndex={0}
+                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <a>Profile</a>
+                </li>
+                <li>
+                  <a>My Admission</a>
+                </li>
+                <li>
+                  <Link onClick={() => logOut()}>Logout</Link>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <Link to="/login">
+              <button
+                className={` px-10 py-3 font-semibold hover:bg-gray-800 hover:text-white hover:-outline-offset-8  hover:outline-primary outline rounded-md duration-300 hover:rounded-none ${
+                  isHomePage || scrolling
+                    ? "outline-gray-800"
+                    : "outline-primary text-white"
+                }`}
+              >
+                Login
+              </button>
+            </Link>
+          )}
+        </div>
+      </div>
+    </header>
   );
 };
 

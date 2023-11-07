@@ -29,8 +29,9 @@ export const router = createBrowserRouter([
         // loader: ({params}) => fetch(`https://college-server-kappa.vercel.app/college-details/${params.id}`)
       },
       {
-        path: "/college",
+        path: "/colleges",
         element: <College />,
+        loader: () => fetch(`http://localhost:5000/colleges`),
       },
     ],
   },
